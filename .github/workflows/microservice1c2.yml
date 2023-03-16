@@ -1,0 +1,27 @@
+name: Microservice 1c2
+
+on:
+  repository_dispatch:
+    types: [trigger-microservice-1c2]
+  workflow_run:
+    workflows: ["Main Pipeline 1"]
+    types:
+      - completed
+    branches:
+      - main
+    conclusion: success
+
+jobs:
+  run_microservice:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Run Microservice 1c2
+        run: python microservice.py
