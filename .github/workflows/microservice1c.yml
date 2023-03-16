@@ -1,6 +1,6 @@
 on:
   repository_dispatch:
-    types: [trigger-microservice-X]
+    types: [trigger-microservice-1c]
 
 jobs:
   run_microservice:
@@ -14,5 +14,5 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Run Microservice X
+      - name: Run Microservice 1c
         run: python microservice.py
