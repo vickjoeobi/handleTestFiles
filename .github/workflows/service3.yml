@@ -1,0 +1,20 @@
+name: Service 3 Pipeline
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build_test_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mock checkout
+        run: echo "Checking out code for Service 3..."
+
+      - name: Mock build
+        run: echo "Building Service 3..."
+
+      - name: Mock test
+        run: echo "Testing Service 3..."
+
+      - name: Mock deploy
+        run: echo "Deploying Service 3..."
