@@ -1,8 +1,9 @@
 name: Microservice3
 
 on:
+  workflow_dispatch:
   repository_dispatch:
-    types: [run_microservice1]
+    types: [run_microservice3]
 
 env:
   OWNER: vickjoeobi
