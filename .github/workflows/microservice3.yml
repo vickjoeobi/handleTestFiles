@@ -1,0 +1,47 @@
+name: Microservice3
+
+on:
+  workflow_run:
+    workflows: ['Orchestrator']
+    types:
+      - completed
+
+env:
+  OWNER: vickjoeobi
+  ORCHESTRATOR_REPO: main1
+
+jobs:
+  build_test_deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Build
+      run: |
+        echo "Building microservice3"
+        sleep 10
+        echo "Build completed"
+
+    - name: Test
+      run: |
+        echo "Testing microservice3"
+        sleep 10
+        echo "Tests passed"
+
+    - name: Deploy
+      run: |
+        echo "Deploying microservice3"
+        sleep 10
+        echo "Deployment successful"
+
+    - name: Notify orchestrator
+      env:
+        ORCHESTRATOR_TOKEN: ${{ secrets.BMW_TEST }}
+      run: |
+        echo "Notifying orchestrator"
+        curl -X POST -H "Authorization: token $ORCHESTRATOR_TOKEN" \
+             -H "Accept: application/vnd.github+json" \
+             "https://api.github.com/repos/${{ env.OWNER }}/${{ env.ORCHESTRATOR_REPO }}/dispatches" \
+             -d '{"event_type": "microservice3_done"}'
