@@ -12,8 +12,8 @@ async function validateRepoFileContent(inputs) {
     if (isValid) {
       console.log('The JSON file in the repo is valid.');
     } else {
-      console.log('The JSON file in the repo is not valid.');
-      throw new Error('Error The JSON file in the repo is not valid.');
+      console.log('The JSON file in the repo is not valid or all the keys are either not present or correct.');
+      throw new Error('Error The JSON file in the repo is not valid or all the keys are either not present or correct.');
     }
 
     return isValid;
