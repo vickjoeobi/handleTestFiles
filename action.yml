@@ -16,6 +16,9 @@ inputs:
   file_path:
     description: 'File path of the JSON file in the repo'
     required: true
+  token:
+    description: 'GitHub token'
+    required: true
 runs:
   using: 'node12'
   main: 'src/index.js'
