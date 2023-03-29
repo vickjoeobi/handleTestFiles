@@ -1,4 +1,5 @@
 const { Octokit } = require('@octokit/rest');
+const core = require('@actions/core');
 
 async function checkFileExistence(inputs) {
     const octokit = new Octokit({ auth: inputs.token });
@@ -7,17 +8,20 @@ async function checkFileExistence(inputs) {
       const { data: repoContent } = await octokit.repos.getContent({
         owner: inputs.username,
         repo: inputs.repo,
-        path: inputs.filePath
+        path: inputs.filePath,
+        ref: 'main'   
       });
   
       console.log('Owner:', inputs.username);
       console.log('Repo:', inputs.repo);
       console.log('Path:', inputs.filePath);
 
-      //use core.notice to print out the full repo path
       core.notice('Owner:', inputs.username);
         core.notice('Repo:', inputs.repo);
         core.notice('Path:', inputs.filePath);
+        
+
+
   
       if (repoContent && repoContent.type === 'file') {
         console.log('The JSON file exists in the repo.');
