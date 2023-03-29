@@ -24,10 +24,23 @@ async function updateGist(inputs) {
   const octokit = new Octokit({ auth: inputs.token });
 
   try {
-    const fileContent = await fs.readFile(inputs.filePath, 'utf-8');
+    // Read the content of the initial file from the gist
+    const gist = await octokit.gists.get({ gist_id: inputs.gistId });
+    const initialFileContent = gist.data.files[inputs.initialFilename].content;
+    const initialFileData = JSON.parse(initialFileContent);
+
+    // Read the content of the repo file
+    const repoFileContent = await fs.readFile(inputs.filePath, 'utf-8');
+    const repoFileData = JSON.parse(repoFileContent);
+
+    // Merge the initial file data with the repo file data
+    const mergedData = { ...initialFileData, ...repoFileData };
+
+    // Prepare the updated files
     const updatedFiles = {
+      [inputs.initialFilename]: null, // Delete the initial file
       [inputs.finalFilename]: {
-        content: fileContent
+        content: JSON.stringify(mergedData, null, 2) // Add the merged data to the final file
       }
     };
 
