@@ -13,6 +13,7 @@ async function validateRepoFileContent(inputs) {
       console.log('The JSON file in the repo is valid.');
     } else {
       console.log('The JSON file in the repo is not valid.');
+      throw new Error('Error The JSON file in the repo is not valid.');
     }
 
     return isValid;
