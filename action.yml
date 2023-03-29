@@ -1,5 +1,21 @@
-name: "Check Files Action"
-description: "Check Files Action"
+name: 'Handle Test File'
+description: 'Handle test files between repo and secret gists'
+inputs:
+  gist_id:
+    description: 'GitHub Gist ID'
+    required: true
+  initial_filename:
+    description: 'Initial file name in the Gist'
+    required: true
+  final_filename:
+    description: 'Final file name in the Gist'
+    required: true
+  expected_test_data_array:
+    description: 'Expected test data array'
+    required: true
+  file_path:
+    description: 'File path of the JSON file in the repo'
+    required: true
 runs:
-  using: "node12"
-  main: index.js
+  using: 'node12'
+  main: 'src/index.js'
