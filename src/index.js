@@ -14,7 +14,7 @@ async function main() {
       finalFilename: core.getInput('final_filename'),
       expectedTestDataArray: JSON.parse(core.getInput('expected_test_data_array')),
       filePath: core.getInput('file_path'),
-      token: process.env.PAT || process.env.GITHUB_TOKEN
+      token: process.env.BMW_TEST || process.env.GITHUB_TOKEN
     };
 
     const repoFileExists = await repo.checkFileExistence(inputs);
