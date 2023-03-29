@@ -21,39 +21,39 @@ async function checkGist(inputs) {
 }
 
 async function updateGist(inputs) {
-  const octokit = new Octokit({ auth: inputs.token });
-
-  try {
-    // Read the content of the initial file from the gist
-    const gist = await octokit.gists.get({ gist_id: inputs.gistId });
-    const initialFileContent = gist.data.files[inputs.initialFilename].content;
-    const initialFileData = JSON.parse(initialFileContent);
-
-    // Read the content of the repo file
-    const repoFileContent = await fs.readFile(inputs.filePath, 'utf-8');
-    const repoFileData = JSON.parse(repoFileContent);
-
-    // Merge the initial file data with the repo file data
-    const mergedData = { ...initialFileData, ...repoFileData };
-
-    // Prepare the updated files
-    const updatedFiles = {
-      [inputs.initialFilename]: null, // Delete the initial file
-      [inputs.finalFilename]: {
-        content: JSON.stringify(mergedData, null, 2) // Add the merged data to the final file
-      }
-    };
-
-    await octokit.gists.update({
-      gist_id: inputs.gistId,
-      files: updatedFiles
-    });
-
-    console.log('Gist updated successfully.');
-  } catch (error) {
-    console.log('Error updating gist:', error.message);
+    const octokit = new Octokit({ auth: inputs.token });
+  
+    try {
+      // Get the initial file content from the gist
+      const gist = await octokit.gists.get({ gist_id: inputs.gistId });
+      const initialFileContent = gist.data.files[inputs.initialFilename].content;
+      const initialFileData = JSON.parse(initialFileContent);
+  
+      // Get the repo file content
+      const repoFileContent = await fs.readFile(inputs.filePath, 'utf-8');
+      const repoFileData = JSON.parse(repoFileContent);
+  
+      // Combine the initial file data with the repo file data
+      const combinedData = { ...initialFileData, ...repoFileData };
+  
+      // Update the gist with the combined data in the final file
+      const updatedFiles = {
+        [inputs.finalFilename]: {
+          content: JSON.stringify(combinedData, null, 2)
+        }
+      };
+  
+      await octokit.gists.update({
+        gist_id: inputs.gistId,
+        files: updatedFiles
+      });
+  
+      console.log('Gist updated successfully.');
+    } catch (error) {
+      console.log('Error updating gist:', error.message);
+    }
   }
-}
+  
 
 module.exports = {
   checkGist,
