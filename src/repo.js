@@ -13,6 +13,11 @@ async function checkFileExistence(inputs) {
       console.log('Owner:', inputs.username);
       console.log('Repo:', inputs.repo);
       console.log('Path:', inputs.filePath);
+
+      //use core.notice to print out the full repo path
+      core.notice('Owner:', inputs.username);
+        core.notice('Repo:', inputs.repo);
+        core.notice('Path:', inputs.filePath);
   
       if (repoContent && repoContent.type === 'file') {
         console.log('The JSON file exists in the repo.');
