@@ -16,7 +16,7 @@ async function checkGist(inputs) {
     }
   } catch (error) {
     console.log('Error checking gist:', error.message);
-    return false;
+    throw new Error('Error checking gist: ' + error.message);
   }
 }
 
@@ -51,6 +51,7 @@ async function updateGist(inputs) {
       console.log('Gist updated successfully.');
     } catch (error) {
       console.log('Error updating gist:', error.message);
+      throw new Error('Error updating gist: ' + error.message);
     }
   }
   

@@ -16,10 +16,6 @@ async function checkFileExistence(inputs) {
       console.log('Repo:', inputs.repo);
       console.log('Path:', inputs.filePath);
 
-      core.notice('Owner:', inputs.username);
-        core.notice('Repo:', inputs.repo);
-        core.notice('Path:', inputs.filePath);
-        
 
 
   
@@ -35,7 +31,7 @@ async function checkFileExistence(inputs) {
       console.log('Owner:', inputs.username);
       console.log('Repo:', inputs.repo);
       console.log('Path:', inputs.filePath);
-      return false;
+      throw new Error('Error checking file existence in repo: ' + error.message);
     }
   }
   

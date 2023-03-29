@@ -18,7 +18,7 @@ async function validateRepoFileContent(inputs) {
     return isValid;
   } catch (error) {
     console.log('Error validating repo file content:', error.message);
-    return false;
+    throw new Error('Error validating repo file content: ' + error.message);
   }
 }
 
