@@ -7,15 +7,15 @@ const repo = require('./repo');
 async function main() {
   try {
     const inputs = {
-      username: context.repo.owner,
-      repo: context.repo.repo,
-      gistId: core.getInput('gist_id'),
-      initialFilename: core.getInput('initial_filename'),
-      finalFilename: core.getInput('final_filename'),
-      expectedTestDataArray: JSON.parse(core.getInput('expected_test_data_array')),
-      filePath: core.getInput('file_path'),
-      token: process.env.BMW_TEST || process.env.GITHUB_TOKEN
-    };
+        username: context.repo.owner,
+        repo: context.repo.repo,
+        gistId: core.getInput('gist_id'),
+        initialFilename: core.getInput('initial_filename'),
+        finalFilename: core.getInput('final_filename'),
+        expectedTestDataArray: JSON.parse(core.getInput('expected_test_data_array')),
+        filePath: core.getInput('file_path'),
+        token: core.getInput('token') // Updated this line
+      };      
 
     const repoFileExists = await repo.checkFileExistence(inputs);
     const isValidGist = await gist.checkGist(inputs);
