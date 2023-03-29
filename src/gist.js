@@ -12,7 +12,7 @@ async function checkGist(inputs) {
       return true;
     } else {
       console.log('The gist ID is not valid or the initial file does not exist.');
-      return false;
+      throw new Error('Error checking gist: ' + error.message);
     }
   } catch (error) {
     console.log('Error checking gist:', error.message);
