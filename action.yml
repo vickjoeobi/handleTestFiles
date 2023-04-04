@@ -19,6 +19,9 @@ inputs:
   token:
     description: 'GitHub token'
     required: true
+outputs:
+  temp_gist_data_path:
+    description: 'Temporary file path of the JSON data from the gist'
 runs:
   using: 'node12'
   main: 'src/index.js'

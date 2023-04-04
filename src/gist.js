@@ -20,6 +20,20 @@ async function checkGist(inputs) {
   }
 }
 
+async function getGistContent(inputs) {
+  const octokit = new Octokit({ auth: inputs.token });
+
+  try {
+    const gist = await octokit.gists.get({ gist_id: inputs.gistId });
+    const initialFileContent = gist.data.files[inputs.initialFilename].content;
+    console.log('Gist content retrieved successfully.');
+    return JSON.parse(initialFileContent);
+  } catch (error) {
+    console.log('Error getting gist content:', error.message);
+    throw new Error('Error getting gist content: ' + error.message);
+  }
+}
+
 async function updateGist(inputs) {
     const octokit = new Octokit({ auth: inputs.token });
   
@@ -58,5 +72,6 @@ async function updateGist(inputs) {
 
 module.exports = {
   checkGist,
-  updateGist
+  updateGist,
+  getGistContent
 };
