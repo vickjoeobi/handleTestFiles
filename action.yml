@@ -1,6 +1,9 @@
 name: 'Handle Test File'
 description: 'Handle test files between repo and secret gists'
 inputs:
+  task:
+    description: 'Task to perform (get or update)'
+    required: true
   gist_id:
     description: 'GitHub Gist ID'
     required: true

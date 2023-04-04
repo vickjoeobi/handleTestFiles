@@ -1,11 +1,12 @@
 # Handle Test File GitHub Action
 
-This custom GitHub Action handles test files by checking for their existence in a repository, validating their content against an expected set of keys, and then updating a GitHub Gist with the combined data from the initial file and the repository file.
+This custom GitHub Action handles test files by fetching data from a GitHub Gist and updating the Gist with new data from a JSON file in the repository. The action can be used two times in the same workflow run for different tasks.
 
 ## Inputs
 
 | Name | Description | Required |
 | --- | --- | --- |
+| task | The task to perform, either 'get' or 'update' | Yes |
 | gist_id | GitHub Gist ID | Yes |
 | initial_filename | Initial file name in the Gist | Yes |
 | final_filename | Final file name in the Gist | Yes |
@@ -30,24 +31,53 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Handle Test File
+    - name: Get Gist Data
+      id: get_gist_data
       uses: vickjoeobi/handleTestFiles@main
       with:
+        task: get
+        gist_id: "gist_id"
+        initial_filename: initial_file_name.json
+        token: ${{ secrets.PAT }}
+
+    - name: Use Gist Data
+      run: |
+        echo "The path to the temporary JSON file containing the Gist data:"
+        echo ${{ steps.get_gist_data.outputs.temp_gist_data_path }}
+
+    - name: Update Gist
+      uses: vickjoeobi/handleTestFiles@main
+      with:
+        task: update
         gist_id: "gist_id"
         initial_filename: initial_file_name.json
         final_filename: final_file_name.json
         expected_test_data_array: '["key1", "key2", "key3"]'
         file_path: path/to/your/file.json
         token: ${{ secrets.PAT }}
+
 ```
 
 **Note**: Make sure to use a GitHub token (either a Personal Access Token or the `GITHUB_TOKEN` provided by the GitHub Actions environment) and store it as a secret in your repository (e.g., `secrets.PAT`).
 
 ## How it works
 
-1. The action checks if the JSON file exists in the specified repository and file path.
-2. It then checks if the provided Gist ID is valid and if the initial file exists in the Gist.
-3. The content of the JSON file in the repository is validated against the expected set of keys provided in the `expected_test_data_array` input.
-4. If all checks pass, the action combines the content of the initial file in the Gist and the JSON file in the repository.
-5. The combined content is then used to create or update the final file in the Gist, as specified by the `final_filename` input.
-6. If any errors occur during the process, the action will throw an error and stop the pipeline.
+1. When the task is 'get':
+
+     - The action checks if the provided Gist ID is valid and if the initial file exists in the Gist.
+     - If the Gist is valid, the action fetches the content of the initial file from the Gist and saves it as a temporary JSON file in the repository's workspace.
+     - The path to the temporary JSON file is set as an output variable `temp_gist_data_path`, which can be used in subsequent steps of the workflow.
+2.  When the task is 'update':
+    
+    -   The action checks if the JSON file exists in the specified repository and file path.
+    -   It then checks if the provided Gist ID is valid and if the initial file exists in the Gist.
+    -   The content of the JSON file in the repository is validated against the expected set of keys provided in the `expected_test_data_array` input.
+    - If all checks pass, the action combines the content of the initial file in the Gist and the JSON file in the repository.
+    - The combined content is then used to create or update the final file in the Gist, as specified by the `final_filename` input.
+3. If any errors occur during the process, the action will throw an error and stop the pipeline.
+
+## Outputs
+
+| Name | Description |
+| --- | --- |
+| temp_gist_data_path | Path to the temporary JSON file containing the Gist data (only available for 'get' task) |
